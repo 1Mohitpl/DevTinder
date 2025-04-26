@@ -25,6 +25,8 @@ Lest take an inside the `src` folder
 
   ```
 - after that connect database before starting Application on 
+
   ```
-PORT 3000
+  PORT 3000
+
   ```
