@@ -1,20 +1,17 @@
-const express = require('express')
-const app = express()
-const port = 3000;
-const {authmiddleware, authUser} = require("./Middlewares/auth");
+const express = require("express");
+const app = express();
+const { serverConfig } = require("./config");
+const { connectDB } = require("./config");
+const { authUser, authmiddleware } = require("./Middlewares");
 
-app.use("/admin", authmiddleware);
+connectDB()
+  .then(() => {
+    console.log("connection established successfully");
+    app.listen(serverConfig.PORT, () => {
+      console.log(`Example app listening on port ${serverConfig.PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.log(`${err}`);
 
-app.get("/admin/getuserdata", (req, res) => {
-  // logic of checking if the request is autharized
-    res.send("get all the user data");
-})
- 
-app.get("/userdata", authUser, (req, res) => {
-     res.send(" Get all the user data");
-})
-
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-}) 
+});
