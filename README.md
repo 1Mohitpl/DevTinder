@@ -5,12 +5,16 @@ DevTinder is an MERN stack Web application designd for developer to connect and 
 This project built using Nodejs, expressjs and mongoDB, maintain microservices architecture for scalability.
 
 - Before The application configure all the Node moules to start the server and execute the following code :
+
   ```
   npm install
+
   ```
 - TO Start the server execute the follwing command :
+
  ```
  npm run start
+ 
  ```
 
 Lest take an inside the `src` folder
@@ -30,3 +34,4 @@ Lest take an inside the `src` folder
   PORT 3000
 
   ```
+- Inside the `Models` folder we are creating our schema of User database, once schema is created based on that schema you can save documents to mongoDB based on that schema. MongoDB provides `save()` methode to save data with propder validation.
