@@ -68,6 +68,23 @@ app.delete("/delete", async (req, res) => {
     }
 })
 
+// update the user by the userid
+
+app.patch("/update", async (req, res) => {
+    const userId = req.body.userId;
+    const data = req.body;
+  try {
+     await User.findByIdAndUpdate({_id : userId}, data);
+     res.send("user update successfully");
+
+    } catch (err) {
+        res.status(400).send(` message :  ${err}`);
+    }
+})
+
+
+
+
 app.get("/feed", async (req, res) => {
   try {
     const allUser = await User.find();
