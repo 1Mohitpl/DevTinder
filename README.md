@@ -35,3 +35,5 @@ Lest take an inside the `src` folder
 
   ```
 - Inside the `Models` folder we are creating our schema of User database, once schema is created based on that schema you can save documents to mongoDB based on that schema. MongoDB provides `save()` methode to save data with propder validation.
+
+`models`-> in this file, we created the template of the database schema 

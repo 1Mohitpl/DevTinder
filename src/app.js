@@ -5,18 +5,13 @@ const { connectDB } = require("./config");
 const { authUser, authmiddleware } = require("./Middlewares");
 const User = require("./models/user");
 
+app.use(express.json());
 
 app.post("/sign-up", async (req, res) => {
    
   try{
     // creating a new instance of the user model 
-    const  user = new User({
-      firstName : "Rohit",
-      lastName : "Paul",
-      email : " Rohit@gmail.com",
-      // password : "Rohit@234",
-      age : 24,
-    });
+    const  user = new User(req.body);  // data dynamic
    
 
     await user.save() ;
