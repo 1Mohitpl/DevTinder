@@ -1,8 +1,18 @@
 # DevTinder 🚀
 
+## Overview
+
 DevTinder is an MERN stack Web application designd for developer to connect and collaborate each other. Here, user can create their profile,explore others developer profiles, send connections request.
 
 This project built using Nodejs, expressjs and mongoDB, maintain microservices architecture for scalability.
+
+## 🔗Tech Stack
+- **Backend:** Node.js + Express.js
+- **Database:** MongoDB + Mongoose
+- **Authentication:** JWT (JSON Web Tokens) + Cookies
+- **Package Maneger** NPM
+- **API Testing** Postman
+- **Encryption**: bcryptjs
 
 - Before The application configure all the Node moules to start the server and execute the following code :
 
