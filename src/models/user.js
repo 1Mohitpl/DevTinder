@@ -5,6 +5,8 @@ const UserSchema = new mongoose.Schema({
     firstName :{
         type : String,
         required : true,
+        minLength : 4,
+        maxLength : 50,
     },
 
     lastName : {
@@ -16,6 +18,8 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required:true,
         unique: true,
+        lowercase : true,
+        trim : true
    
       },
       Job_title:{
@@ -23,7 +27,12 @@ const UserSchema = new mongoose.Schema({
       },
    
       gender:{
-        type: String
+        type: String,
+        validate(value) {
+          if(!["male", "female", "others"].includes(value)){
+            throw new Error("Gender is not valid")
+          }
+        }
       },
       
       password : {
@@ -32,14 +41,27 @@ const UserSchema = new mongoose.Schema({
         unique : true,
       },
       
-      age : {
+    age : {
         type : Number,
         required : true,
+        min : 18,
       },
 
+    skills: {
+    type: [String],
+    validate: {
+      validator: function (val) {
+        return val.length >= 2 && val.length <= 4;
+      },
+      message: 'You must provide between 2 and 4 skills.'
+    }
+  }
 
 
 
+
+}, {
+  timestamps : true,
 });
 
 const User = mongoose.model("User", UserSchema);
