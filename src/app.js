@@ -4,14 +4,36 @@ const { serverConfig } = require("./config");
 const { connectDB } = require("./config");
 const { authUser, authmiddleware } = require("./Middlewares");
 const User = require("./models/user");
+const { validationSignup } = require("./utils/validations");
+const brcypt = require ("bcrypt");
 
 app.use(express.json());
 
 app.post("/sign-up", async (req, res) => {
-  // creating a new instance of the user model
-  const user = new User(req.body); // data dynamic
 
-  try {
+   try {
+         // validate the data
+      validationSignup(req);
+
+      // now encrypt password
+      const {firstName, lastName, age, Job_title, email,password} = req.body;
+      const hashPassword = await brcypt.hash(password, 10);
+    
+      
+
+  // creating a new instance of the user model
+  const user = new User({
+    firstName,
+    lastName,
+    email,
+    age,
+    Job_title,
+    password : hashPassword,
+
+  }); // data dynamic
+
+
+ 
     await user.save();
     res.send("user added successfully");
   } catch (err) {

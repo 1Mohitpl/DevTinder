@@ -64,7 +64,7 @@ const UserSchema = new mongoose.Schema({
     type: [String],
     validate: {
       validator: function (val) {
-        return val.length >= 2 && val.length <= 4;
+        return val.length >= 2 || val.length <= 4;
       },
       message: 'You must provide between 2 and 4 skills.'
     }
