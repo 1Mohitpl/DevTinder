@@ -5,7 +5,7 @@ const { connectDB } = require("./config");
 const { authUser, authmiddleware } = require("./Middlewares");
 const User = require("./models/user");
 const { validationSignup } = require("./utils/validations");
-const brcypt = require ("bcrypt");
+const bcrypt = require("bcrypt");
 
 app.use(express.json());
 
@@ -17,7 +17,7 @@ app.post("/sign-up", async (req, res) => {
 
       // now encrypt password
       const {firstName, lastName, age, Job_title, email,password} = req.body;
-      const hashPassword = await brcypt.hash(password, 10);
+      const hashPassword = await bcrypt.hash(password, 10);
     
       
 
@@ -40,6 +40,35 @@ app.post("/sign-up", async (req, res) => {
     res.status(400).send(`eror message ${err.message}`);
   }
 });
+
+
+app.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const userPresent = await User.findOne({ email: email });
+
+    if (!userPresent) {
+      return res.status(400).send({ message: "Invalid Credentials" });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, userPresent.password);
+
+    if (isPasswordValid) {
+      res.status(200).send("Login is successful...");
+    } else {
+      return res.status(400).send({ message: "Invalid Credentials" });
+    }
+
+  } catch (err) {
+    res.status(400).send(`error message: ${err.message}`);
+  }
+});
+
+
+
+
+
 
 
 
