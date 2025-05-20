@@ -6,8 +6,11 @@ const { authUser, authmiddleware } = require("./Middlewares");
 const User = require("./models/user");
 const { validationSignup } = require("./utils/validations");
 const bcrypt = require("bcrypt");
+const cookieParser = require('cookie-parser')
 
 app.use(express.json());
+
+app.use(cookieParser());
 
 app.post("/sign-up", async (req, res) => {
 
@@ -55,6 +58,18 @@ app.post("/login", async (req, res) => {
     const isPasswordValid = await bcrypt.compare(password, userPresent.password);
 
     if (isPasswordValid) {
+
+     
+    // Create JWT token
+
+    // and the token to cookie and send the responce back to the user
+
+
+
+
+
+
+
       res.status(200).send("Login is successful...");
     } else {
       return res.status(400).send({ message: "Invalid Credentials" });
