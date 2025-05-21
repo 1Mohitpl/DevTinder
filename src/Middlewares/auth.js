@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
+const { JWT_KEY } = require("../config/server-config");
 
 const authUser = async (req, res, next) => {
   try {
@@ -12,7 +13,7 @@ const authUser = async (req, res, next) => {
     }
 
     // validate the token
-    const checkUser = await jwt.verify(token, "DEvTinder@2001");
+    const checkUser = await jwt.verify(token, JWT_KEY);
 
     const { _id } = checkUser;
 
