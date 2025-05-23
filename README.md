@@ -47,3 +47,13 @@ Lest take an inside the `src` folder
 - Inside the `Models` folder we are creating our schema of User database, once schema is created based on that schema you can save documents to mongoDB based on that schema. MongoDB provides `save()` methode to save data with propder validation.
 
 `models`-> in this file, we created the template of the database schema 
+
+
+- `Middlewares` In this folder we are basically build user Authentication feather, whenever user try to loggin, it `JWT` token is created keep inside the `Cookies` in the server and send back to the Client-side. Now, whenever the user made API call, the cookies will be validated.
+
+- `routes` in this folder, we are creating the all the Router-handler
+```
+authRouter, profileRouter, sentrequestRouter
+
+```
+
