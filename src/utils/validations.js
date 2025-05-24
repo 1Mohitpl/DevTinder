@@ -26,8 +26,16 @@ const validateProfileData = (req) =>{
 }
 
 
+const validateForgetPassword = (req) => {
+  const { currentPassword, newPassword } = req.body;
+  if (!currentPassword || !newPassword) {
+    throw new Error("Please enter both current and new passwords");
+  }
+};
+
 
 module.exports =  {
      validationSignup,
-     validateProfileData
+     validateProfileData,
+     validateForgetPassword
 }

@@ -1,5 +1,5 @@
-const { validationSignup, validateProfileData } = require("./validations");
+const { validationSignup, validateProfileData, validateForgetPassword } = require("./validations");
 
 module.exports = {
-    validationSignup, validateProfileData
+    validationSignup, validateProfileData, validateForgetPassword
 }
