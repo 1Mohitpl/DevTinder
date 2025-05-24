@@ -1,7 +1,8 @@
 const express = require("express");
-const { validationSignup } = require("../utils/validations");
+
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
+const { validationSignup } = require("../utils");
 
 const authRouter = express.Router();
 
@@ -11,10 +12,10 @@ authRouter.post("/sign-up", async (req, res) => {
 
    try {
          // validate the data
-      validationSignup(req);
+     validationSignup(req);
 
       // now encrypt password
-      const {firstName, lastName, age, Job_title, email,password} = req.body;
+      const {firstName, lastName, age, Job_title, email,password, skills} = req.body;
       const hashPassword = await bcrypt.hash(password, 10);
     
       
@@ -26,6 +27,7 @@ authRouter.post("/sign-up", async (req, res) => {
     email,
     age,
     Job_title,
+    skills,
     password : hashPassword,
 
   }); // data dynamic
