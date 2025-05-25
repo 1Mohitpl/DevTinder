@@ -27,6 +27,7 @@ requestRouter.post("/request/send/:status/:toUserId",  authUser,   async (req, r
     if(!touser){
        return res.status(404).json({message : "user is not found"});
     }
+    // to validate user not sent yourself and do not sent request double 
     const existConnetionReq = await connectionRequestUser.findOne({
         $or:[
           {fromUserId, toUserId},
