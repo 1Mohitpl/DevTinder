@@ -22,7 +22,7 @@ requestRouter.post("/request/send/:status/:toUserId",  authUser,   async (req, r
          .status(400)
          .json({message : "Invalid status type..."})
     }
-     
+     // to check the user is preasent in the database or not
     const touser = await User.findById(toUserId);
     if(!touser){
        return res.status(404).json({message : "user is not found"});

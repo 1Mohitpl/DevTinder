@@ -76,6 +76,9 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
+
+UserSchema.index ({firstName : 1 , lastName :1});
+
 UserSchema.methods.getJWT = async function () {
   const user = this;
   const token = await jwt.sign({ _id: user._id }, JWT_KEY, {
