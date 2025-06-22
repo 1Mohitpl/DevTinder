@@ -76,6 +76,8 @@ requestRouter.post("/request/send/review/:status/:requestId", authUser, async (r
     const loggedInUser = req.user;
     const { status, requestId } = req.params;
 
+    // validate the status to check the correct position
+
     const allowedStatus = ["accepted", "rejected"];
     if (!allowedStatus.includes(status)) {
       return res.status(400).json({ message: "status not valid" });
