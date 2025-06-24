@@ -45,4 +45,20 @@ userRouter.get("/user/connections", authUser, async (req, res) => {
   }
 });
 
+
+
+
+userRouter.get("/feed", authUser, async(req, res) => {
+   try{
+       
+
+   }catch(err) {
+     res.status(400).send(`error message : ${err}`);
+   }
+})
+
+
+
+
+
 module.exports = userRouter;
