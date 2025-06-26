@@ -50,7 +50,17 @@ userRouter.get("/user/connections", authUser, async (req, res) => {
 
 userRouter.get("/feed", authUser, async(req, res) => {
    try{
-       
+      const loggedInUser = user.req;
+
+      // find all the connections 
+      const connections = connectionRequestModel.find({
+        $or: [
+          {fromUserId : loggedInUser._id}, 
+          {toUserId: loggedInUser._id},
+        ]
+      })
+
+      res.send(connections);
 
    }catch(err) {
      res.status(400).send(`error message : ${err}`);
