@@ -1,6 +1,8 @@
 const express = require("express");
 const { authUser } = require("../Middlewares");
 const connectionRequestModel = require("../models/connectionreq");
+const { set } = require("mongoose");
+const User = require("../models/user");
 const userRouter = express.Router();
 const User_Safe_Data = "firstName lastName";
 
@@ -48,24 +50,42 @@ userRouter.get("/user/connections", authUser, async (req, res) => {
 
 
 
-userRouter.get("/feed", authUser, async(req, res) => {
-   try{
-      const loggedInUser = user.req;
+userRouter.get("/user/feed", authUser, async (req, res) => {
+  try {
+    const loggedInUser = req.user;
 
-      // find all the connections 
-      const connections = connectionRequestModel.find({
-        $or: [
-          {fromUserId : loggedInUser._id}, 
-          {toUserId: loggedInUser._id},
-        ]
-      })
+    // Find all the user's connections
+    const connections = await connectionRequestModel.find({
+      $or: [
+        { fromUserId: loggedInUser._id },
+        { toUserId: loggedInUser._id },
+      ]
+    }).select("fromUserId toUserId");
 
-      res.send(connections);
+    const notshowUserFeed = new Set();
 
-   }catch(err) {
-     res.status(400).send(`error message : ${err}`);
-   }
-})
+    connections.forEach((conn) => {
+      notshowUserFeed.add(conn.fromUserId.toString());
+      notshowUserFeed.add(conn.toUserId.toString());
+    });
+
+    // console.log(notshowUserFeed);
+
+    const showFeedUser = await User.find({
+      $and : [
+        {_id : {$nin: Array.from(notshowUserFeed)}},
+        {_id: {$ne: loggedInUser._id}},
+      ]
+    }).select(User_Safe_Data);
+
+    res.send(showFeedUser);
+
+  } catch (err) {
+    console.error(err);
+    res.status(404).json({ message: `${err}` });
+  }
+});
+
 
 
 
