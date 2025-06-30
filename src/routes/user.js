@@ -54,7 +54,17 @@ userRouter.get("/user/feed", authUser, async (req, res) => {
   try {
     const loggedInUser = req.user;
 
-    // Find all the user's connections
+    // 1. Pagination setup
+    const page = parseInt(req.query.page) || 1;
+    let limit = parseInt(req.query.limit) || 10;
+    limit = limit > 20 ? 20 : limit;
+    const skip = (page - 1) * limit;
+
+    // 2. Get logged-in user's skills
+    const currentUser = await User.findById(loggedInUser._id).select("skills");
+    const userSkills = currentUser.skills;
+
+    // 3. Get all connections
     const connections = await connectionRequestModel.find({
       $or: [
         { fromUserId: loggedInUser._id },
@@ -63,28 +73,30 @@ userRouter.get("/user/feed", authUser, async (req, res) => {
     }).select("fromUserId toUserId");
 
     const notshowUserFeed = new Set();
-
     connections.forEach((conn) => {
       notshowUserFeed.add(conn.fromUserId.toString());
       notshowUserFeed.add(conn.toUserId.toString());
     });
 
-    // console.log(notshowUserFeed);
-
+    // 4. Find users to show on feed
     const showFeedUser = await User.find({
-      $and : [
-        {_id : {$nin: Array.from(notshowUserFeed)}},
-        {_id: {$ne: loggedInUser._id}},
+      $and: [
+        { _id: { $nin: Array.from(notshowUserFeed) } }, // exclude connections
+        { _id: { $ne: loggedInUser._id } },              // exclude self
+        { skills: { $in: userSkills } }                  // at least one matching skill
       ]
-    }).select(User_Safe_Data);
+    })
+      .select(User_Safe_Data)
+      .skip(skip)
+      .limit(limit);
 
     res.send(showFeedUser);
-
   } catch (err) {
     console.error(err);
-    res.status(404).json({ message: `${err}` });
+    res.status(500).json({ message: err.message });
   }
 });
+
 
 
 
